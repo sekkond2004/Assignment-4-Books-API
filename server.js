@@ -3,12 +3,39 @@ const app = express();
 
 app.use(express.json());
 
+// ✅ BOOKS ARRAY MUST BE ABOVE ROUTES
+let books = [
+    {
+        id: 1,
+        title: "The Great Gatsby",
+        author: "F. Scott Fitzgerald",
+        genre: "Fiction",
+        copiesAvailable: 5
+    },
+    {
+        id: 2,
+        title: "To Kill a Mockingbird",
+        author: "Harper Lee",
+        genre: "Fiction",
+        copiesAvailable: 3
+    },
+    {
+        id: 3,
+        title: "1984",
+        author: "George Orwell",
+        genre: "Dystopian Fiction",
+        copiesAvailable: 7
+    }
+];
+
+// ---------------- ROUTES ----------------
+
 // GET all books
 app.get('/api/books', (req, res) => {
     res.status(200).json(books);
 });
 
-// GET specific book by ID
+// GET by ID
 app.get('/api/books/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const book = books.find(b => b.id === id);
@@ -20,7 +47,7 @@ app.get('/api/books/:id', (req, res) => {
     res.status(200).json(book);
 });
 
-// POST add new book
+// POST
 app.post('/api/books', (req, res) => {
     const { title, author, genre, copiesAvailable } = req.body;
 
@@ -36,7 +63,7 @@ app.post('/api/books', (req, res) => {
     res.status(201).json(newBook);
 });
 
-// PUT update existing book
+// PUT
 app.put('/api/books/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const book = books.find(b => b.id === id);
@@ -55,7 +82,7 @@ app.put('/api/books/:id', (req, res) => {
     res.status(200).json(book);
 });
 
-// DELETE book
+// DELETE
 app.delete('/api/books/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const index = books.findIndex(b => b.id === id);
@@ -68,7 +95,7 @@ app.delete('/api/books/:id', (req, res) => {
     res.status(200).json(deletedBook[0]);
 });
 
-// Start server (only if not running tests)
+// ✅ IMPORTANT FOR TESTING
 if (process.env.NODE_ENV !== 'test') {
     app.listen(3000, () => {
         console.log("Server running on port 3000");
@@ -76,12 +103,3 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 module.exports = app;
-
-
-
-
-
-
-
-
-
